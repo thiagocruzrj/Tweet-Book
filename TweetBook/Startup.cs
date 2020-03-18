@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TweetBook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TweetBook.Options;
 
 namespace TweetBook
 {
@@ -28,6 +29,8 @@ namespace TweetBook
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(x => { x.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "TweetBook Api", Version = "v1" }); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +47,12 @@ namespace TweetBook
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option => { option.RouteTemplate = swaggerOptions.JsonRoute; });
+            app.UseSwaggerUI(option => { option.SwaggerEndpoint(swaggerOptions.UiEndPoint, swaggerOptions.Description); });
 
             app.UseMvc(routes =>
             {
