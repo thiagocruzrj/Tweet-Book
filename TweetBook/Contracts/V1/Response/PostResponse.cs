@@ -1,7 +1,9 @@
-﻿namespace TweetBook.Contracts.V1.Response
+﻿using System;
+
+namespace TweetBook.Contracts.V1.Response
 {
-    public class PostReponse
+    public class PostResponse
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
     }
 }
