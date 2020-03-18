@@ -6,32 +6,29 @@ using TweetBook.Contracts.V1;
 using TweetBook.Contracts.V1.Requests;
 using TweetBook.Contracts.V1.Response;
 using TweetBook.Domain;
+using TweetBook.Services;
 
 namespace TweetBook.Controllers.V1
 {
     public class PostsController : Controller
     {
-        private readonly List<Post> _posts;
+        private readonly IPostService _postService;
 
-        public PostsController()
+        public PostsController(IPostService postService)
         {
-            _posts = new List<Post>();
-            for (var i = 0; i < 5; i++)
-            {
-                _posts.Add(new Post { Id = Guid.NewGuid(), Name = $"Post Name {i}" });
-            }
+            _postService = postService;
         }
 
         [HttpGet(ApiRoutes.Posts.GetAll)]
         public IActionResult GetAll()
         {
-            return Ok(_posts);
+            return Ok(_postService.GetPosts());
         }
 
         [HttpGet(ApiRoutes.Posts.GetById)]
         public IActionResult GetById([FromRoute] Guid postId)
         {
-            var post = _posts.SingleOrDefault(x => x.Id == postId);
+            var post = _postService.GetPostById(postId);
 
             if (post == null)
                 return NotFound();
@@ -47,7 +44,7 @@ namespace TweetBook.Controllers.V1
             if (post.Id != Guid.Empty)
                 post.Id = Guid.NewGuid();
 
-            _posts.Add(post);
+            _postService.GetPosts().Add(post);
 
             var baseUrl = $"{ HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUrl = baseUrl + "/" + ApiRoutes.Posts.GetById.Replace("{postId}", post.Id.ToString());
