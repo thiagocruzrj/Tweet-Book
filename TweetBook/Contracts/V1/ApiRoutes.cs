@@ -9,6 +9,8 @@
         public static class Posts
         {
             public const string GetAll = Base + "/posts";
+            public const string GetById = Base + "/posts/{postId}";
+            public const string Create = Base + "/posts";
         }
     }
 }
