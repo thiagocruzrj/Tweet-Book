@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TweetBook.Installers
 {
-    public class MvcIsntaller : IInstaller
+    public class MvcInstaller : IInstaller
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
