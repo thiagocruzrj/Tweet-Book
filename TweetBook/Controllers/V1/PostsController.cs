@@ -57,10 +57,7 @@ namespace TweetBook.Controllers.V1
         [HttpPost(ApiRoutes.Posts.Create)]
         public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
         {
-            var post = new Post { Id = postRequest.Id };
-             
-            if (post.Id != Guid.Empty)
-                post.Id = Guid.NewGuid();
+            var post = new Post { Name = postRequest.Name }; 
 
             await _postService.CreatePost(post);
 
