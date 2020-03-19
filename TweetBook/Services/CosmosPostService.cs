@@ -31,7 +31,9 @@ namespace TweetBook.Services
 
         public async Task<Post> GetPostById(Guid postId)
         {
-            throw new NotImplementedException();
+            var post = await _cosmosStore.FindAsync(postId.ToString(), postId.ToString());
+
+            return post == null ? null : new Post { Id = Guid.Parse(post.Id), Name = post.Name };
         }
 
         public async Task<List<Post>> GetPosts()
