@@ -17,7 +17,7 @@ namespace TweetBook.Installers
                 configuration["CosmosSettings:AccountKey"],
                 new ConnectionPolicy {ConnectionMode = ConnectionMode.Direct, ConnectionProtocol = Protocol.Tcp });
 
-            services.AddCosmosStore<Post>(cosmosStoreSettings);
+            services.AddCosmosStore<CosmosPostDto>(cosmosStoreSettings);
         }
     }
 }

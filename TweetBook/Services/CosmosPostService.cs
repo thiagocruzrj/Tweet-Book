@@ -19,8 +19,9 @@ namespace TweetBook.Services
 
         public async Task<bool> CreatePost(Post post)
         {
-            var cosmosPost = new CosmosPostDto { Id = post.Id.ToString(), Name = post.Name };
+            var cosmosPost = new CosmosPostDto { Id = Guid.NewGuid().ToString(), Name = post.Name };
             var response = await _cosmosStore.AddAsync(cosmosPost);
+            post.Id = Guid.Parse(cosmosPost.Id);
             return response.IsSuccess;
         }
 
