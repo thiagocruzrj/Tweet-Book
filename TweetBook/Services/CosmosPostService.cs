@@ -1,6 +1,8 @@
 ﻿using Cosmonaut;
+using Cosmonaut.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TweetBook.Domain;
 
@@ -17,7 +19,9 @@ namespace TweetBook.Services
 
         public async Task<bool> CreatePost(Post post)
         {
-            throw new NotImplementedException();
+            var cosmosPost = new CosmosPostDto { Id = post.Id.ToString(), Name = post.Name };
+            var response = await _cosmosStore.AddAsync(cosmosPost);
+            return response.IsSuccess;
         }
 
         public async Task<bool> DeletePost(Guid postId)
@@ -32,7 +36,8 @@ namespace TweetBook.Services
 
         public async Task<List<Post>> GetPosts()
         {
-            throw new NotImplementedException();
+            var posts = await _cosmosStore.Query().ToListAsync();
+            return posts.Select(x => new Post { Id = Guid.Parse(x.Id), Name = x.Name }).ToList();
         }
 
         public async Task<bool> UpdatePost(Post postUpdate)
