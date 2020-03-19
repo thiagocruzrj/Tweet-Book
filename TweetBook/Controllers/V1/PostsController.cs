@@ -73,8 +73,7 @@ namespace TweetBook.Controllers.V1
         {
             var deleted = await _postService.DeletePost(postId);
 
-            if (deleted)
-                return NoContent();
+            if (deleted) return NoContent();
 
             return NotFound();
         }
