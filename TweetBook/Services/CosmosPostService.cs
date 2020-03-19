@@ -26,7 +26,8 @@ namespace TweetBook.Services
 
         public async Task<bool> DeletePost(Guid postId)
         {
-            throw new NotImplementedException();
+            var response =  await _cosmosStore.RemoveByIdAsync(postId.ToString(), postId.ToString());
+            return response.IsSuccess;
         }
 
         public async Task<Post> GetPostById(Guid postId)
