@@ -17,7 +17,7 @@ namespace TweetBook.Services
             _cosmosStore = cosmosStore;
         }
 
-        public async Task<bool> CreatePost(Post post)
+        public async Task<bool> CreatePostAsync(Post post)
         {
             var cosmosPost = new CosmosPostDto { Id = Guid.NewGuid().ToString(), Name = post.Name };
             var response = await _cosmosStore.AddAsync(cosmosPost);
@@ -25,26 +25,26 @@ namespace TweetBook.Services
             return response.IsSuccess;
         }
 
-        public async Task<bool> DeletePost(Guid postId)
+        public async Task<bool> DeletePostAsync(Guid postId)
         {
             var response =  await _cosmosStore.RemoveByIdAsync(postId.ToString(), postId.ToString());
             return response.IsSuccess;
         }
 
-        public async Task<Post> GetPostById(Guid postId)
+        public async Task<Post> GetPostByIdAsync(Guid postId)
         {
             var post = await _cosmosStore.FindAsync(postId.ToString(), postId.ToString());
 
             return post == null ? null : new Post { Id = Guid.Parse(post.Id), Name = post.Name };
         }
 
-        public async Task<List<Post>> GetPosts()
+        public async Task<List<Post>> GetPostsAsync()
         {
             var posts = await _cosmosStore.Query().ToListAsync();
             return posts.Select(x => new Post { Id = Guid.Parse(x.Id), Name = x.Name }).ToList();
         }
 
-        public async Task<bool> UpdatePost(Post postUpdate)
+        public async Task<bool> UpdatePostAsync(Post postUpdate)
         {
             var cosmosPost = new CosmosPostDto { Id = postUpdate.Id.ToString(), Name = postUpdate.Name };
 
