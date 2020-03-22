@@ -1,6 +1,6 @@
 ﻿namespace TweetBook.Contracts.V1.Response
 {
-    public class RegistrationResponse
+    public class AuthSuccessResponse
     {
         public string Token { get; set; }
     }

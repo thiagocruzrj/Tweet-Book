@@ -34,7 +34,7 @@ namespace TweetBook.Services
                 };
             }
 
-            var newUser = new IdentityUser() { Email = email, UserName = email };
+            var newUser = new IdentityUser { Email = email, UserName = email };
 
             var createdUser = await _userMenager.CreateAsync(newUser, password);
 
@@ -47,9 +47,9 @@ namespace TweetBook.Services
             }
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-            var tokenDescription = new SecurityTokenDescriptor
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
+                Subject = new ClaimsIdentity(new []
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, newUser.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -60,10 +60,11 @@ namespace TweetBook.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescription);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return new AuthenticationResult
             {
+                Success = true,
                 Token = tokenHandler.WriteToken(token)
             };
         }
