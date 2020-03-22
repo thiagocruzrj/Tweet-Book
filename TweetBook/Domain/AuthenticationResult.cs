@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TweetBook.Domain
 {
@@ -9,6 +6,6 @@ namespace TweetBook.Domain
     {
         public string Token { get; set; }
         public bool Success { get; set; }
-        public string ErrorMessage { get; set; }
+        public IEnumerable<string> Errors { get; set; }
     }
 }
