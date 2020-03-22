@@ -1,6 +1,6 @@
 ﻿namespace TweetBook.Services
 {
-    public class IdentityService
+    public class IdentityService : IIdentityService
     {
     }
 }
