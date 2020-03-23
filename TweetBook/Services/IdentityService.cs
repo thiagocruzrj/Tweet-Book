@@ -22,10 +22,6 @@ namespace TweetBook.Services
             _jwtSettings = jwtSettings;
         }
 
-        public Task<AuthenticationResult> LoginAsync(string email, string password)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<AuthenticationResult> RegisterAsync(string email, string password)
         {
@@ -78,6 +74,30 @@ namespace TweetBook.Services
                 Success = true,
                 Token = tokenHandler.WriteToken(token)
             };
+        }
+        public async Task<AuthenticationResult> LoginAsync(string email, string password)
+        {
+            var user = await _userMenager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User doesnt exit" }
+                };
+            }
+
+            var userHasValidPassword = await _userMenager.CheckPasswordAsync(user, password);
+
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User password combitation is wrong" }
+                };
+            }
+
+            return GenerateAuthenticationResultForUser(user);
         }
     }
 }
