@@ -44,6 +44,11 @@ namespace Tweetbook
             var swaggerOptions = new SwaggerOptions();
             Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
 
+            app.UseSwagger(o =>
+            {
+                o.RouteTemplate = "";
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
