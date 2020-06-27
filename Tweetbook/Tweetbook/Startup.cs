@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Tweetbook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using Tweetbook.Options;
 
 namespace Tweetbook
 {
@@ -46,7 +46,12 @@ namespace Tweetbook
 
             app.UseSwagger(o =>
             {
-                o.RouteTemplate = "";
+                o.RouteTemplate = swaggerOptions.JsonRoute;
+            });
+
+            app.UseSwaggerUI(o =>
+            {
+                o.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
             });
 
             app.UseHttpsRedirection();
