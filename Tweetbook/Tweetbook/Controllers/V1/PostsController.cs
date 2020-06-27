@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Tweetbook.Domain;
 
-namespace Tweetbook.Controllers
+namespace Tweetbook.Controllers.V1
 {
     public class PostsController : Controller
     {
