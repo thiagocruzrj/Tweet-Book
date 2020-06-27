@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Tweetbook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Tweetbook
 {
@@ -39,6 +40,9 @@ namespace Tweetbook
             {
                 app.UseHsts();
             }
+
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
