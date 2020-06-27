@@ -26,9 +26,13 @@ namespace Tweetbook.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Posts.Create)]
-        public IActionResult Create()
+        public IActionResult Create([FromBody] Post post)
         {
+            if (string.IsNullOrEmpty(post.Id))
+                post.Id = Guid.NewGuid().ToString();
 
+            _posts.
+            return Created();
         }
     }
 }
