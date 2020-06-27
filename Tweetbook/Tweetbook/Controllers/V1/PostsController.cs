@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Tweetbook.Contract.V1;
+using Tweetbook.Controllers.Responses;
 using Tweetbook.Controllers.V1.Requests;
 using Tweetbook.Domain;
 
@@ -39,7 +40,8 @@ namespace Tweetbook.Controllers.V1
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id);
 
-            return Created(locationUrl, post);
+            var response = new PostResponse { Id = post.Id };
+            return Created(locationUrl, response);
         }
     }
 }
