@@ -31,8 +31,11 @@ namespace Tweetbook.Controllers.V1
             if (string.IsNullOrEmpty(post.Id))
                 post.Id = Guid.NewGuid().ToString();
 
-            _posts.
-            return Created();
+            _posts.Add(post);
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id);
+            return Created(locationUrl, post);
         }
     }
 }
