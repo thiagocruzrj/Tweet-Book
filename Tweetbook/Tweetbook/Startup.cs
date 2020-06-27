@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Tweetbook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tweetbook.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using SwaggerOptions = Tweetbook.Options.SwaggerOptions;
 
 namespace Tweetbook
 {
@@ -28,6 +29,11 @@ namespace Tweetbook
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new Info { Title = "TweetBook Api", Version = "v1" });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
