@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Tweetbook.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Linq;
+using Tweetbook.Installer;
 using SwaggerOptions = Tweetbook.Options.SwaggerOptions;
 
 namespace Tweetbook
@@ -22,13 +20,11 @@ namespace Tweetbook
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<DataContext>();
-
-
+            var classesImplementingInstaller = typeof(Startup).Assembly.ExportedTypes.Where(x =>
+                                                typeof(IInstaller).IsAssignableFrom(x) 
+                                                 && !x.IsInterface && !x.IsAbstract)
+                                                  .Select(Activator.CreateInstance)
+                                                   .Cast<IInstaller>().ToList();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
