@@ -32,5 +32,10 @@ namespace Tweetbook.Services
         {
             return _posts;
         }
+
+        public bool UpdatePost(Post postToUpdate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using Tweetbook.Contract.V1;
 using Tweetbook.Controllers.Responses;
 using Tweetbook.Controllers.V1.Requests;
