@@ -27,27 +27,19 @@ namespace Tweetbook.Services
             return await _dataContext.Posts.ToListAsync();
         }
 
-        public bool UpdatePost(Post postToUpdate)
+        public async Task<bool> UpdatePost(Post postToUpdate)
         {
-            var exists = GetPostById(postToUpdate.Id) != null;
-
-            if (!exists)
-                return false;
-
-            var index = _posts.FindIndex(x => x.Id == postToUpdate.Id);
-            _posts[index] = postToUpdate;
-            return true;
+            _dataContext.Posts.Update(postToUpdate);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
         }
 
-        public bool DeletePost(Guid id)
+        public async Task<bool> DeletePost(Guid id)
         {
-            var post = GetPostById(id);
-
-            if (post == null)
-                return false;
-
-            _posts.Remove(post);
-                return true;
+            var post = await GetPostById(id);
+            _dataContext.Posts.Remove(post);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
         }
     }
 }
