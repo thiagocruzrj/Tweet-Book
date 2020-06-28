@@ -26,6 +26,13 @@ namespace Tweetbook.Services
             return await _dataContext.Posts.ToListAsync();
         }
 
+        public async Task<bool> CreatePost(Post post)
+        {
+            await _dataContext.Posts.AddAsync(post);
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
+        }
+
         public async Task<bool> UpdatePost(Post postToUpdate)
         {
             _dataContext.Posts.Update(postToUpdate);
