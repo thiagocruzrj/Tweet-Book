@@ -19,6 +19,7 @@ namespace Tweetbook.Installer
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddScoped<IPostService, PostService>();
+            //services.AddSingleton<IPostService, CosmosPostService>();
         }
     }
 }
