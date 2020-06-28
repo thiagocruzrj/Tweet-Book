@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tweetbook.Contract.V1;
 using Tweetbook.Controllers.Responses;
 using Tweetbook.Controllers.V1.Requests;
@@ -10,7 +11,7 @@ namespace Tweetbook.Controllers.V1
 {
     public class PostsController : Controller
     {
-        private List<Post> _posts;
+        private readonly List<Post> _posts;
 
         public PostsController()
         {
@@ -34,6 +35,7 @@ namespace Tweetbook.Controllers.V1
         [HttpGet(ApiRoutes.Posts.Get)]
         public IActionResult Get([FromRoute]Guid postId)
         {
+            var post = _posts.SingleOrDefault(x => x.Id == postId);
             return Ok(_posts);
         }
 
