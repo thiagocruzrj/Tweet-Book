@@ -20,7 +20,7 @@ namespace Tweetbook.Controllers.V1
             {
                 _posts.Add(new Post 
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
                     Name = $"Post Name {i}"
                 });
             }
@@ -44,15 +44,15 @@ namespace Tweetbook.Controllers.V1
         {
             var post = new Post { Id = postRequest.Id };
 
-            if (string.IsNullOrEmpty(post.Id))
-                post.Id = Guid.NewGuid().ToString();
+            if (post.Id != Guid.Empty)
+                post.Id = Guid.NewGuid();
 
             _posts.Add(post);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id);
+            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
 
-            var response = new PostResponse { Id = post.Id };
+            var response = new PostResponse { Id = post.Id.ToString() };
             return Created(locationUrl, response);
         }
     }
