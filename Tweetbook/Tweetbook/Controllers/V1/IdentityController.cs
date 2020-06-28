@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Tweetbook.Contract.V1;
+using Tweetbook.Controllers.Responses;
 using Tweetbook.Controllers.V1.Requests;
 using Tweetbook.Services;
 
@@ -19,7 +20,19 @@ namespace Tweetbook.Controllers.V1
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
             var authResponse = await _identityService.RegisterAsync(request.Email, request.Password);
-            return Ok();
+
+            if(!authResponse.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+            }
+
+            return Ok(new AuthSucessResponse 
+            { 
+                Token = authResponse.Token
+            });
         }
     }
 }
