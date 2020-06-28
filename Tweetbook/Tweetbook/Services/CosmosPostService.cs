@@ -45,9 +45,16 @@ namespace Tweetbook.Services
             return response.IsSuccess;
         }
 
-        public Task<bool> UpdatePostAsync(Post postToUpdate)
+        public async Task<bool> UpdatePostAsync(Post postToUpdate)
         {
-            throw new NotImplementedException();
+            var cosmosPost = new CosmosPostDto
+            {
+                Id = postToUpdate.Id.ToString(),
+                Name = postToUpdate.Name
+            };
+
+            var response = await _cosmosStore.UpdateAsync(cosmosPost);
+            return response.IsSuccess;
         }
 
         public Task<bool> DeletePostAsync(Guid id)
