@@ -1,12 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Tweetbook.Contract.V1;
+using Tweetbook.Controllers.V1.Requests;
+using Tweetbook.Services;
 
 namespace Tweetbook.Controllers.V1
 {
     public class IdentityController : Controller
     {
+        private readonly IIdentityService _identityService;
+
+        public IdentityController(IIdentityService identityService)
+        {
+            _identityService = identityService;
+        }
+
+        [HttpPost(ApiRoutes.Identity.Register)]
+        public async Task<IActionResult> Register([FromBody] UserRegistrationRequest userRegistration)
+        {
+            return Ok();
+        }
     }
 }
