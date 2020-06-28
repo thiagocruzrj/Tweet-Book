@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Cosmonaut;
+using Cosmonaut.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Tweetbook.Domain;
 
@@ -7,9 +10,18 @@ namespace Tweetbook.Services
 {
     public class CosmosPostService : IPostService
     {
-        public Task<List<Post>> GetPostsAsync()
+        private readonly ICosmosStore<CosmosPostDto> _cosmosStore;
+
+        public CosmosPostService(ICosmosStore<CosmosPostDto> cosmosStore)
         {
-            throw new NotImplementedException();
+            _cosmosStore = cosmosStore;
+        }
+
+        public async Task<List<Post>> GetPostsAsync()
+        {
+            var posts = await _cosmosStore.Query().ToListAsync();
+
+            return posts.Select(x => new Post { Id = Guid.Parse(x.Id), Name = x.Name }).ToList();
         }
 
         public Task<Post> GetPostByIdAsync(Guid id)
