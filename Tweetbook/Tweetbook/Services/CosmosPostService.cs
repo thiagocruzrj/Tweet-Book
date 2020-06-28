@@ -28,9 +28,16 @@ namespace Tweetbook.Services
         {
             throw new NotImplementedException();
         }
-        public Task<bool> CreatePostAsync(Post post)
+        public async Task<bool> CreatePostAsync(Post post)
         {
-            throw new NotImplementedException();
+            var cosmosPost = new CosmosPostDto
+            {
+                Id = post.Id.ToString(),
+                Name = post.Name
+            };
+
+            var response = await _cosmosStore.AddAsync(cosmosPost);
+            return response.IsSuccess;
         }
 
         public Task<bool> UpdatePostAsync(Post postToUpdate)
