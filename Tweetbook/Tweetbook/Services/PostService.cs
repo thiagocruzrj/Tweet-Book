@@ -17,9 +17,9 @@ namespace Tweetbook.Services
             _dataContext = dataContext;
         }
 
-        public Post GetPostById(Guid id)
+        public async Task<Post> GetPostById(Guid id)
         {
-            return _dataContext.Posts.Find(id);
+            return await _dataContext.Posts.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Post>> GetPosts()
