@@ -28,7 +28,7 @@ namespace Tweetbook.Services
             return _posts.SingleOrDefault(x => x.Id == id);
         }
 
-        public Task<Post> GetPosts()
+        public List<Post> GetPosts()
         {
             return _posts;
         }
