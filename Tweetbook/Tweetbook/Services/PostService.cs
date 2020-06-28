@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Tweetbook.Domain;
 
 namespace Tweetbook.Services
@@ -21,6 +20,11 @@ namespace Tweetbook.Services
                     Name = $"Post Name {i}"
                 });
             }
+        }
+
+        public bool DeletePost(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
         public Post GetPostById(Guid id)
