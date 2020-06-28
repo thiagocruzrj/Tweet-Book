@@ -22,11 +22,6 @@ namespace Tweetbook.Services
             }
         }
 
-        public bool DeletePost(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Post GetPostById(Guid id)
         {
             return _posts.SingleOrDefault(x => x.Id == id);
@@ -47,6 +42,17 @@ namespace Tweetbook.Services
             var index = _posts.FindIndex(x => x.Id == postToUpdate.Id);
             _posts[index] = postToUpdate;
             return true;
+        }
+
+        public bool DeletePost(Guid id)
+        {
+            var post = GetPostById(id);
+
+            if (post == null)
+                return false;
+
+            _posts.Remove(post);
+                return true;
         }
     }
 }
