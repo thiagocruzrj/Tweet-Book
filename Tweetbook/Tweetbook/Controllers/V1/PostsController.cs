@@ -17,12 +17,22 @@ namespace Tweetbook.Controllers.V1
             _posts = new List<Post>();
             for (int i = 0; i < 5; i++)
             {
-                _posts.Add(new Post { Id = Guid.NewGuid().ToString() });
+                _posts.Add(new Post 
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = $"Post Name {i}"
+                });
             }
         }
 
         [HttpGet(ApiRoutes.Posts.GetAll)]
         public IActionResult GetAll()
+        {
+            return Ok(_posts);
+        }
+
+        [HttpGet(ApiRoutes.Posts.Get)]
+        public IActionResult Get([FromRoute]Guid postId)
         {
             return Ok(_posts);
         }
