@@ -1,35 +1,30 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Tweetbook.Data;
 using Tweetbook.Domain;
 
 namespace Tweetbook.Services
 {
     public class PostService : IPostService
     {
-        private readonly List<Post> _posts;
+        private readonly DataContext _dataContext;
 
-        public PostService()
+        public PostService(DataContext dataContext)
         {
-            _posts = new List<Post>();
-            for (int i = 0; i < 5; i++)
-            {
-                _posts.Add(new Post
-                {
-                    Id = Guid.NewGuid(),
-                    Name = $"Post Name {i}"
-                });
-            }
+            _dataContext = dataContext;
         }
 
         public Post GetPostById(Guid id)
         {
-            return _posts.SingleOrDefault(x => x.Id == id);
+            return _dataContext.Posts.Find(id);
         }
 
-        public List<Post> GetPosts()
+        public async Task<List<Post>> GetPosts()
         {
-            return _posts;
+            return await _dataContext.Posts.ToListAsync();
         }
 
         public bool UpdatePost(Post postToUpdate)
