@@ -43,6 +43,7 @@ namespace Tweetbook.Services
             };
 
             var response = await _cosmosStore.AddAsync(cosmosPost);
+            post.Id = Guid.Parse(cosmosPost.Id);
             return response.IsSuccess;
         }
 
