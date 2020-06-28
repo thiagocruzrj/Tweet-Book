@@ -9,7 +9,7 @@ namespace Tweetbook.Services
     {
         Task<List<Post>> GetPosts();
         Task<Post> GetPostById(Guid id);
-        bool UpdatePost(Post postToUpdate);
-        bool DeletePost(Guid id);
+        Task<bool> UpdatePost(Post postToUpdate);
+        Task<bool> DeletePost(Guid id);
     }
 }
