@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using Tweetbook.Options;
 
 namespace Tweetbook.Installer
 {
@@ -9,6 +10,9 @@ namespace Tweetbook.Installer
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(nameof(jwtSettings), jwtSettings);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(x =>
