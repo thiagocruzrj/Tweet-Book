@@ -38,7 +38,7 @@ namespace Tweetbook.Services
         {
             var cosmosPost = new CosmosPostDto
             {
-                Id = post.Id.ToString(),
+                Id = Guid.NewGuid().ToString(),
                 Name = post.Name
             };
 
