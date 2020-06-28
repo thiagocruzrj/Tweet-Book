@@ -1,7 +1,9 @@
-﻿namespace Tweetbook.Controllers.Responses
+﻿using System;
+
+namespace Tweetbook.Controllers.Responses
 {
     public class PostResponse
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

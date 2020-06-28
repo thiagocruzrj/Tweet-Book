@@ -36,6 +36,10 @@ namespace Tweetbook.Controllers.V1
         public IActionResult Get([FromRoute]Guid postId)
         {
             var post = _posts.SingleOrDefault(x => x.Id == postId);
+
+            if (post == null)
+                return NotFound();
+
             return Ok(_posts);
         }
 
@@ -52,7 +56,7 @@ namespace Tweetbook.Controllers.V1
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
 
-            var response = new PostResponse { Id = post.Id.ToString() };
+            var response = new PostResponse { Id = post.Id };
             return Created(locationUrl, response);
         }
     }
