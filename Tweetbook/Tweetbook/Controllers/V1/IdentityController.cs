@@ -18,6 +18,7 @@ namespace Tweetbook.Controllers.V1
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest userRegistration)
         {
+            var registration
             return Ok();
         }
     }
