@@ -24,10 +24,15 @@ namespace Tweetbook.Services
             return posts.Select(x => new Post { Id = Guid.Parse(x.Id), Name = x.Name }).ToList();
         }
 
-        public Task<Post> GetPostByIdAsync(Guid id)
+        public async Task<Post> GetPostByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var post = await _cosmosStore.FindAsync(id.ToString(), id.ToString());
+
+            if (post == null) return null;
+
+            return new Post { Id = Guid.Parse(post.Id), Name = post.Name };
         }
+
         public async Task<bool> CreatePostAsync(Post post)
         {
             var cosmosPost = new CosmosPostDto
