@@ -16,9 +16,9 @@ namespace Tweetbook.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Identity.Register)]
-        public async Task<IActionResult> Register([FromBody] UserRegistrationRequest userRegistration)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
-            var registration
+            var authResponse = await _identityService.RegisterAsync(request.Email, request.Password);
             return Ok();
         }
     }
