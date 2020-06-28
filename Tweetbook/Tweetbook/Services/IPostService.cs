@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Tweetbook.Domain;
 
 namespace Tweetbook.Services
 {
     public interface IPostService
     {
-        Task<Post> GetPosts();
+        List<Post> GetPosts();
         Post GetPostById(Guid id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Tweetbook.Domain;
 
@@ -24,12 +25,12 @@ namespace Tweetbook.Services
 
         public Post GetPostById(Guid id)
         {
-            throw new NotImplementedException();
+            return _posts.SingleOrDefault(x => x.Id == id);
         }
 
         public Task<Post> GetPosts()
         {
-            throw new NotImplementedException();
+            return _posts;
         }
     }
 }
