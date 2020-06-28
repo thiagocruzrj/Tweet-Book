@@ -1,5 +1,6 @@
 ﻿using Cosmonaut;
 using Cosmonaut.Extensions;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,9 +58,10 @@ namespace Tweetbook.Services
             return response.IsSuccess;
         }
 
-        public Task<bool> DeletePostAsync(Guid id)
+        public async Task<bool> DeletePostAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var response =  await _cosmosStore.RemoveByIdAsync(id.ToString(), id.ToString());
+            return response.IsSuccess;
         }
     }
 }
