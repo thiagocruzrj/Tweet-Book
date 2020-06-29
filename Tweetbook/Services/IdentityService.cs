@@ -50,6 +50,11 @@ namespace Tweetbook.Services
                 };
             }
 
+            return GenerateAuthenticarionResultForUse(newUser);
+        }
+
+        private AuthenticationResult GenerateAuthenticarionResultForUse(IdentityUser newUser)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var tokenDescription = new SecurityTokenDescriptor
