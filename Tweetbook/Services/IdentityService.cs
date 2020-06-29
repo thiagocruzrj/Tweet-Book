@@ -73,5 +73,10 @@ namespace Tweetbook.Services
                 Token = tokenHandler.WriteToken(token)
             };
         }
+
+        public Task<AuthenticationResult> LoginAsync(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
