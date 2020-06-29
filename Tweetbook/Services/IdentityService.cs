@@ -53,6 +53,31 @@ namespace Tweetbook.Services
             return GenerateAuthenticarionResultForUse(newUser);
         }
 
+        public async Task<AuthenticationResult> LoginAsync(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User doesnt exists" }
+                };
+            }
+
+            var userWithValidPassword = await _userManager.CheckPasswordAsync(user, password);
+
+            if (!userWithValidPassword)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User/password combination is wrong" }
+                };
+            }
+
+            return GenerateAuthenticarionResultForUse(user);
+        }
+
         private AuthenticationResult GenerateAuthenticarionResultForUse(IdentityUser newUser)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -79,9 +104,5 @@ namespace Tweetbook.Services
             };
         }
 
-        public Task<AuthenticationResult> LoginAsync(string email, string password)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
