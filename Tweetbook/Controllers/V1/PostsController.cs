@@ -7,6 +7,7 @@ using Tweetbook.Contract.V1;
 using Tweetbook.Controllers.Responses;
 using Tweetbook.Controllers.V1.Requests;
 using Tweetbook.Domain;
+using Tweetbook.Extensions;
 using Tweetbook.Services;
 
 namespace Tweetbook.Controllers.V1
@@ -41,7 +42,11 @@ namespace Tweetbook.Controllers.V1
         [HttpPost(ApiRoutes.Posts.Create)]
         public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
         {
-            var post = new Post { Name = postRequest.Name };
+            var post = new Post 
+            { 
+               Name = postRequest.Name,
+               UserId = HttpContext.GetUserId()
+            };
 
             if (post.Id != Guid.Empty)
                 post.Id = Guid.NewGuid();
@@ -58,6 +63,8 @@ namespace Tweetbook.Controllers.V1
         [HttpPut(ApiRoutes.Posts.Update)]
         public async Task<IActionResult> Update([FromRoute] Guid postId, [FromBody] UpdatePostRequest request)
         {
+            var userOwnsPost = await _postService.UserOwnsPostAsync(postId, HttpContext.GetUserId());
+
             var post = new Post
             {
                 Id = postId,
