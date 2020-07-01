@@ -15,11 +15,15 @@ namespace Tweetbook.Services
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly TokenValidationParameters _tokenValidationParameters;
 
-        public IdentityService(UserManager<IdentityUser> userManager, JwtSettings jwtSettings)
+        public IdentityService(UserManager<IdentityUser> userManager,
+            JwtSettings jwtSettings,
+            TokenValidationParameters tokenValidationParameters)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
+            _tokenValidationParameters = tokenValidationParameters;
         }
 
         public async Task<AuthenticationResult> RegisterAsync(string email, string password)
@@ -78,6 +82,28 @@ namespace Tweetbook.Services
             return GenerateAuthenticarionResultForUse(user);
         }
 
+        public Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ClaimsPrincipal GetPrincipalFromToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
+            }
+        }
+
+        private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
+        {
+            return (validatedToken is JwtSecurityToken jwtSecurityToken) &&
+                    jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                        StringComparison.InvariantCultureIgnoreCase);
+        }
+
         private AuthenticationResult GenerateAuthenticarionResultForUse(IdentityUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -102,11 +128,6 @@ namespace Tweetbook.Services
                 Success = true,
                 Token = tokenHandler.WriteToken(token)
             };
-        }
-
-        public Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }
