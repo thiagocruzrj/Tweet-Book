@@ -83,9 +83,26 @@ namespace Tweetbook.Services
             return GenerateAuthenticarionResultForUse(user);
         }
 
-        public Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
+        public async Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
         {
-            throw new NotImplementedException();
+            var validationToken = GetPrincipalFromToken(token);
+
+            if(validationToken == null)
+            {
+                return new AuthenticationResult { Errors = new[] { "Invalid Token" } };
+            }
+
+            var expiryDateUnix = long.Parse(validationToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+
+            var expiryDateTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                .AddSeconds(expiryDateUnix)
+                .Subtract(_jwtSettings.TokenLifetime);
+
+            if (expiryDateTimeUtc > DateTime.UtcNow)
+            {
+                return new AuthenticationResult { Errors = new[] { "This token hasn't expired yet" } };
+            }
+
         }
 
         private ClaimsPrincipal GetPrincipalFromToken(string token)
