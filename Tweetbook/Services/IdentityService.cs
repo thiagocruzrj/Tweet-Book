@@ -98,8 +98,7 @@ namespace Tweetbook.Services
             var expiryDateUnix = long.Parse(validationToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
 
             var expiryDateTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-                .AddSeconds(expiryDateUnix)
-                .Subtract(_jwtSettings.TokenLifetime);
+                .AddSeconds(expiryDateUnix);
 
             if (expiryDateTimeUtc > DateTime.UtcNow)
             {
