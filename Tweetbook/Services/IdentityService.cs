@@ -1,4 +1,5 @@
-﻿using Humanizer;
+﻿using Cosmonaut.Extensions;
+using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Tweetbook.Data;
 using Tweetbook.Domain;
 using Tweetbook.Options;
 
@@ -17,14 +19,16 @@ namespace Tweetbook.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
         private readonly TokenValidationParameters _tokenValidationParameters;
+        private readonly DataContext _context;
 
         public IdentityService(UserManager<IdentityUser> userManager,
             JwtSettings jwtSettings,
-            TokenValidationParameters tokenValidationParameters)
+            TokenValidationParameters tokenValidationParameters, DataContext context)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
             _tokenValidationParameters = tokenValidationParameters;
+            _context = context;
         }
 
         public async Task<AuthenticationResult> RegisterAsync(string email, string password)
@@ -100,9 +104,44 @@ namespace Tweetbook.Services
 
             if (expiryDateTimeUtc > DateTime.UtcNow)
             {
-                return new AuthenticationResult { Errors = new[] { "This token hasn't expired yet" } };
+                return new AuthenticationResult { Errors = new[] { "This refresh token hasn't expired yet" } };
             }
 
+            var jti = validationToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+
+            var storedRefreshToken = await _context.RefreshTokens.SingleOrDefaultAsync(x => x.Token == refreshToken);
+
+            if(storedRefreshToken == null)
+            {
+                return new AuthenticationResult { Errors = new[] { "This refresh token doesn't exist" } };
+            }
+
+            if(DateTime.UtcNow > storedRefreshToken.ExpiryDate)
+            {
+                return new AuthenticationResult { Errors = new[] { "This refresh token has expired " } };
+            }
+
+            if(storedRefreshToken.Invalidated)
+            {
+                return new AuthenticationResult { Errors = new[] { "This refresh token has been invalidated" } };
+            }
+
+            if (storedRefreshToken.Used)
+            {
+                return new AuthenticationResult { Errors = new[] { "This refresh token has been used" } };
+            }
+
+            if (storedRefreshToken.JwtId != jti)
+            {
+                return new AuthenticationResult { Errors = new[] { "This refresh token doesn't match this JWT" } };
+            }
+
+            storedRefreshToken.Used = true;
+            _context.RefreshTokens.Update(storedRefreshToken);
+            await _context.SaveChangesAsync();
+
+            var user = await _userManager.FindByIdAsync(validationToken.Claims.Single(x => x.Type == "id").Value);
+            return GenerateAuthenticarionResultForUse(user);
         }
 
         private ClaimsPrincipal GetPrincipalFromToken(string token)
