@@ -1,5 +1,4 @@
 ﻿using Cosmonaut.Extensions;
-using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -59,7 +58,7 @@ namespace Tweetbook.Services
                 };
             }
 
-            return GenerateAuthenticarionResultForUse(newUser);
+            return await GenerateAuthenticarionResultForUseAsync(newUser);
         }
 
         public async Task<AuthenticationResult> LoginAsync(string email, string password)
@@ -84,7 +83,7 @@ namespace Tweetbook.Services
                 };
             }
 
-            return GenerateAuthenticarionResultForUse(user);
+            return await GenerateAuthenticarionResultForUseAsync(user);
         }
 
         public async Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
@@ -141,7 +140,7 @@ namespace Tweetbook.Services
             await _context.SaveChangesAsync();
 
             var user = await _userManager.FindByIdAsync(validationToken.Claims.Single(x => x.Type == "id").Value);
-            return GenerateAuthenticarionResultForUse(user);
+            return await GenerateAuthenticarionResultForUseAsync(user);
         }
 
         private ClaimsPrincipal GetPrincipalFromToken(string token)
@@ -168,7 +167,7 @@ namespace Tweetbook.Services
                         StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private AuthenticationResult GenerateAuthenticarionResultForUse(IdentityUser user)
+        private async Task<AuthenticationResult> GenerateAuthenticarionResultForUseAsync(IdentityUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
@@ -187,10 +186,22 @@ namespace Tweetbook.Services
 
             var token = tokenHandler.CreateToken(tokenDescription);
 
+            var refreshToken = new RefreshToken
+            {
+                JwtId = token.Id,
+                UserId = user.Id,
+                CreationDate = DateTime.UtcNow,
+                ExpiryDate = DateTime.UtcNow.AddMonths(6)
+            };
+
+            await _context.RefreshTokens.AddAsync(refreshToken);
+            await _context.SaveChangesAsync();
+
             return new AuthenticationResult
             {
                 Success = true,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                RefreshToken = refreshToken.Token
             };
         }
     }
