@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -94,6 +95,13 @@ namespace Tweetbook.Services
             try
             {
                 var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
+                if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
+                    return null;
+
+                return principal;
+            } catch
+            {
+                return null;
             }
         }
 
