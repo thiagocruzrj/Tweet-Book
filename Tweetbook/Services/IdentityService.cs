@@ -103,5 +103,10 @@ namespace Tweetbook.Services
                 Token = tokenHandler.WriteToken(token)
             };
         }
+
+        public Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

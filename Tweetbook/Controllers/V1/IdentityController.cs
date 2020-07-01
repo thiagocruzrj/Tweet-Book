@@ -68,7 +68,7 @@ namespace Tweetbook.Controllers.V1
         [HttpPost(ApiRoutes.Identity.Refresh)]
         public async Task<IActionResult> RefreshTokenRequest([FromBody] RefreshTokenRequest request)
         {
-            var authResponse = await _identityService.LoginAsync(request.Email, request.Password);
+            var authResponse = await _identityService.RefreshTokenAsync(request.Token, request.RefreshToken);
 
             if (!authResponse.Success)
             {
