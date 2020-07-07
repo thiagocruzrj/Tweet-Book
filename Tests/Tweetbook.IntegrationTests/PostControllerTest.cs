@@ -24,5 +24,15 @@ namespace Tweetbook.IntegrationTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             await response.Content.ReadAsAsync<List<Post>>().Should().BeEmpty();
         }
+
+        [Fact]
+        public async void Get_ReturnPost_WhenPostExistsInTheDatabase()
+        {
+            // Arrange
+            await AuthenticateAsync();
+            // Act
+
+            // Assert
+        }
     }
 }
