@@ -1,9 +1,11 @@
 ﻿using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Tweetbook.Contract.V1;
+using Tweetbook.Controllers.V1.Requests;
 using Tweetbook.Domain;
 using Xunit;
 
@@ -26,13 +28,20 @@ namespace Tweetbook.IntegrationTests
         }
 
         [Fact]
-        public async void Get_ReturnPost_WhenPostExistsInTheDatabase()
+        public async Task Get_ReturnPost_WhenPostExistsInTheDatabase()
         {
             // Arrange
             await AuthenticateAsync();
+            var createPost = await CreatePostAsync(new CreatePostRequest { Name = "Test Post" });
+
             // Act
+            var response = await TestClient.GetAsync(ApiRoutes.Posts.Get.Replace("{postId}", createPost.Id.ToString()));
 
             // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var returnedPost = await response.Content.ReadAsAsync<Post>();
+            returnedPost.Id.Should().Be(createPost.Id);
+            returnedPost.Name.Should().Be("Test post");
         }
     }
 }
