@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Tweetbook.Contract.V1;
 using Xunit;
 
 namespace Tweetbook.IntegrationTests
@@ -10,13 +12,15 @@ namespace Tweetbook.IntegrationTests
 
         public UnitTest1()
         {
-            var appFactory = new WebApplicationFactory<Startup>().CreateClient();
+            var appFactory = new WebApplicationFactory<Startup>();
+            _client = appFactory.CreateClient();
         }
 
         [Fact]
-        public void Test1()
+        [Trait("TestingReplaceEndpoint", "Replace get endpoint")]
+        public async Task TestingReplaceEndpoint()
         {
-
+            await _client.GetAsync(ApiRoutes.Posts.Get.Replace("{postId}", "1"));
         }
     }
 }
