@@ -1,4 +1,4 @@
-﻿namespace Tweetbook.Controllers.V1.Requests
+﻿namespace Tweetbook.Contract.Requests
 {
     public class RefreshTokenRequest
     {

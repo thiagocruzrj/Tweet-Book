@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tweetbook.Controllers.Responses
+namespace Tweetbook.Contract.Responses
 {
     public class AuthFailedResponse
     {

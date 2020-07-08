@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using Tweetbook.Contract.Requests;
+using Tweetbook.Contract.Responses;
 using Tweetbook.Contract.V1;
-using Tweetbook.Controllers.Responses;
-using Tweetbook.Controllers.V1.Requests;
 using Tweetbook.Services;
 
 namespace Tweetbook.Controllers.V1

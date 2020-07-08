@@ -1,4 +1,4 @@
-﻿namespace Tweetbook.Controllers.Responses
+﻿namespace Tweetbook.Contract.Responses
 {
     public class AuthSucessResponse
     {

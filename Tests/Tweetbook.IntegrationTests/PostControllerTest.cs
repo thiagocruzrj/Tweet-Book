@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Tweetbook.Contract.Requests;
 using Tweetbook.Contract.V1;
-using Tweetbook.Controllers.V1.Requests;
 using Tweetbook.Domain;
 using Xunit;
 
