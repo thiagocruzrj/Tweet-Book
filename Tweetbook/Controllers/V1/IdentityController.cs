@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using Tweetbook.Contract.Requests;
 using Tweetbook.Contract.Responses;
 using Tweetbook.Contract.V1;
+using Tweetbook.Contract.V1.Requests;
+using Tweetbook.Contract.V1.Responses;
 using Tweetbook.Services;
 
-namespace Tweetbook.Controllers.V1
+namespace Tweetbook.Contract.V1
 {
     public class IdentityController : Controller
     {

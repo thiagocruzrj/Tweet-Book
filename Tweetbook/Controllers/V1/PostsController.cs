@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Tweetbook.Contract.Requests;
-using Tweetbook.Contract.Responses;
 using Tweetbook.Contract.V1;
+using Tweetbook.Contract.V1.Requests;
+using Tweetbook.Contract.V1.Responses;
 using Tweetbook.Domain;
 using Tweetbook.Extensions;
 using Tweetbook.Services;
 
-namespace Tweetbook.Controllers.V1
+namespace Tweetbook.Contract.V1
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PostsController : Controller
