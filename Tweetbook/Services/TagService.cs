@@ -38,5 +38,19 @@ namespace Tweetbook.Services
         {
             return await _dataContext.Tags.AsNoTracking().SingleOrDefaultAsync(x => x.Name == tagName.ToLower());
         }
+
+        public async Task<bool> DeleteTagAsync(string tagName)
+        {
+            var tag = await _dataContext.Tags.AsNoTracking().SingleOrDefaultAsync(x => x.Name == tagName.ToLower());
+
+            if (tag == null)
+                return true;
+
+            var postTags = await _dataContext.PostTags.Where(x => x.TagName == tagName.ToLower()).ToListAsync();
+
+            _dataContext.PostTags.RemoveRange(postTags);
+            _dataContext.Tags.Remove(tag);
+            return await _dataContext.SaveChangesAsync() > postTags.Count;
+        }
     }
 }
