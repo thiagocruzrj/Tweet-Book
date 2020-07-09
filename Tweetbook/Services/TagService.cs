@@ -16,5 +16,10 @@ namespace Tweetbook.Services
         {
             _dataContext = dataContext;
         }
+
+        public async Task<List<Tag>> GetAllTagsAsync()
+        {
+            return await _dataContext.Tags.AsNoTracking().ToListAsync();
+        }
     }
 }
