@@ -7,7 +7,7 @@ using Tweetbook.Services;
 
 namespace Tweetbook.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Poster")]
     public class TagsController : Controller
     {
         private readonly ITagService _tagService;
