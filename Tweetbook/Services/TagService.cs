@@ -33,5 +33,10 @@ namespace Tweetbook.Services
             var created = await _dataContext.SaveChangesAsync();
             return created > 0;
         }
+
+        public async Task<Tag> GetTagByNameAsync(string tagName)
+        {
+            return await _dataContext.Tags.AsNoTracking().SingleOrDefaultAsync(x => x.Name == tagName.ToLower());
+        }
     }
 }
