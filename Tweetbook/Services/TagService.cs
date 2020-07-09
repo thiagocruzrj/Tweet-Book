@@ -52,5 +52,20 @@ namespace Tweetbook.Services
             _dataContext.Tags.Remove(tag);
             return await _dataContext.SaveChangesAsync() > postTags.Count;
         }
+
+        private async Task AddNewTags(Post post)
+        {
+            foreach (var tag in post.Tags)
+            {
+                var existingTag =
+                    await _dataContext.Tags.SingleOrDefaultAsync(x =>
+                        x.Name == tag.TagName);
+                if (existingTag != null)
+                    continue;
+
+                await _dataContext.Tags.AddAsync(new Tag
+                { Name = tag.TagName, CreatedOn = DateTime.UtcNow, CreatorId = post.UserId });
+            }
+        }
     }
 }
