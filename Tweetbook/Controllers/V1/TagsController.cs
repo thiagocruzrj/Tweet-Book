@@ -10,17 +10,17 @@ namespace Tweetbook.Controllers.V1
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TagsController : Controller
     {
-        private readonly IPostService _postService;
+        private readonly ITagService _tagService;
 
-        public TagsController(IPostService postService)
+        public TagsController(ITagService tagService)
         {
-            _postService = postService;
+            _tagService = tagService;
         }
 
         [HttpGet(ApiRoutes.Tags.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            return Ok(await _tagService.GetAllTagsAsync());
         }
     }
 }
