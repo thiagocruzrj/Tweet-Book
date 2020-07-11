@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tweetbook.Controllers.Responses
+namespace Tweetbook.Contract.V1.Responses
 {
     public class PostResponse
     {
